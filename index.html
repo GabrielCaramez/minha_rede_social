@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAT MEDIA MESSAGE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="logo/Blue Minimalist Chat Media Logo.png" type="image/png"> <!-- Adiciona a logo como favicon -->
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CHAT MEDIA MESSAGE</h1>
+            <select id="themeSelector" onchange="changeTheme()">
+                <option value="default">Tema Padrão</option>
+                <option value="dark">Tema Escuro</option>
+                <option value="light">Tema Claro</option>
+            </select>
+            <input type="file" id="backgroundInput" accept="image/*" onchange="changeBackground()">
+        </header>
+        <main>
+            <div id="login-box" class="login-box">
+                <img src="logo/Blue Minimalist Chat Media Logo.png" alt="Logo" class="logo"> <!-- Adiciona a logo ao início do login -->
+                <h2>Login</h2>
+                <input type="text" id="username" placeholder="Nome de usuário">
+                <button onclick="login()">Entrar</button>
+            </div>
+            <div id="chat-box" class="chat-box hidden">
+                <div id="messages"></div>
+                <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
+                <button onclick="sendMessage()">Enviar</button>
+                <button onclick="clearMessages()">Limpar Conversa</button> <!-- Botão para limpar a conversa -->
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
