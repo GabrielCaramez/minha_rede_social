@@ -5,34 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHAT MEDIA MESSAGE</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="logo/Blue Minimalist Chat Media Logo.png" type="image/png"> <!-- Adiciona a logo como favicon -->
+    <link rel="icon" href="logo/Blue Minimalist Chat Media Logo.png" type="image/png">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <header>
+        <header class="text-center my-3">
             <h1>CHAT MEDIA MESSAGE</h1>
-            <select id="themeSelector" onchange="changeTheme()">
-                <option value="default">Tema Padrão</option>
-                <option value="dark">Tema Escuro</option>
-                <option value="light">Tema Claro</option>
-            </select>
-            <input type="file" id="backgroundInput" accept="image/*" onchange="changeBackground()">
+            <div class="d-flex justify-content-center mt-3">
+                <select id="themeSelector" class="custom-select mr-2" onchange="changeTheme()">
+                    <option value="default">Tema Padrão</option>
+                    <option value="dark">Tema Escuro</option>
+                    <option value="light">Tema Claro</option>
+                </select>
+                <input type="file" id="backgroundInput" class="form-control-file" accept="image/*" onchange="changeBackground()">
+            </div>
         </header>
         <main>
-            <div id="login-box" class="login-box">
-                <img src="logo/Blue Minimalist Chat Media Logo.png" alt="Logo" class="logo"> <!-- Adiciona a logo ao início do login -->
+            <div id="login-box" class="login-box text-center">
+                <img src="logo/Blue Minimalist Chat Media Logo.png" alt="Logo" class="logo mb-3">
                 <h2>Login</h2>
-                <input type="text" id="username" placeholder="Nome de usuário">
-                <button onclick="login()">Entrar</button>
+                <input type="text" id="username" class="form-control mb-2" placeholder="Nome de usuário">
+                <button class="btn btn-primary" onclick="login()">Entrar</button>
             </div>
             <div id="chat-box" class="chat-box hidden">
-                <div id="messages"></div>
-                <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
-                <button onclick="sendMessage()">Enviar</button>
-                <button onclick="clearMessages()">Limpar Conversa</button> <!-- Botão para limpar a conversa -->
+                <div id="messages" class="border p-3 mb-3"></div>
+                <div class="input-group mb-2">
+                    <input type="text" id="messageInput" class="form-control" placeholder="Digite sua mensagem...">
+                    <div class="input-group-append">
+                        <button class="btn btn-success" onclick="sendMessage()">Enviar</button>
+                    </div>
+                </div>
+                <button class="btn btn-danger" onclick="clearMessages()">Limpar Conversa</button>
+                <button class="btn btn-info mt-2" onclick="startVideoCall()">Iniciar Video Chamada</button>
+            </div>
+            <div id="video-call" class="video-call hidden">
+                <video id="localVideo" autoplay muted class="w-100"></video>
+                <video id="remoteVideo" autoplay class="w-100"></video>
+                <button class="btn btn-danger mt-2" onclick="endVideoCall()">Encerrar Video Chamada</button>
             </div>
         </main>
     </div>
     <script src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
