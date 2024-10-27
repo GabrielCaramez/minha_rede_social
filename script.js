@@ -11,6 +11,24 @@ const servers = {
     ]
 };
 
+// Placeholder for signaling server connection
+let signalingServer = new WebSocket('wss://your-signaling-server-url');
+
+signalingServer.onmessage = async (message) => {
+    const data = JSON.parse(message.data);
+
+    if (data.type === 'offer') {
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+        const answer = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answer);
+        signalingServer.send(JSON.stringify({ type: 'answer', answer: answer }));
+    } else if (data.type === 'answer') {
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+    } else if (data.type === 'candidate') {
+        await peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+    }
+};
+
 function login() {
     const usernameInput = document.getElementById('username');
     currentUser = usernameInput.value.trim();
@@ -74,7 +92,7 @@ function startVideoCall() {
 
             peerConnection.onicecandidate = event => {
                 if (event.candidate) {
-                    // Send the candidate to the remote peer
+                    signalingServer.send(JSON.stringify({ type: 'candidate', candidate: event.candidate }));
                 }
             };
 
@@ -82,7 +100,7 @@ function startVideoCall() {
             peerConnection.createOffer()
                 .then(offer => {
                     peerConnection.setLocalDescription(offer);
-                    // Send the offer to the remote peer
+                    signalingServer.send(JSON.stringify({ type: 'offer', offer: offer }));
                 });
         })
         .catch(error => {
@@ -91,8 +109,16 @@ function startVideoCall() {
 }
 
 function endVideoCall() {
-    peerConnection.close();
-    localStream.getTracks().forEach(track => track.stop());
+    if (peerConnection) {
+        peerConnection.close();
+        peerConnection = null;
+    }
+    if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+        localStream = null;
+    }
+    document.getElementById('localVideo').srcObject = null;
+    document.getElementById('remoteVideo').srcObject = null;
     document.getElementById('video-call').classList.add('hidden');
 }
 
